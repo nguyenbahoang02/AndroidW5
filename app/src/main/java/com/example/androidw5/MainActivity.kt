@@ -2,7 +2,10 @@ package com.example.androidw5
 
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.widget.LinearLayout
 import android.widget.ListView
+import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.RecyclerView
 import java.util.*
 
 
@@ -29,7 +32,8 @@ class MainActivity : AppCompatActivity() {
             )
         }
         val adapter = ItemAdapter(itemList)
-        val listView = findViewById<ListView>(R.id.listView)
+        val listView = findViewById<RecyclerView>(R.id.listView)
+        listView.layoutManager = LinearLayoutManager(this)
         listView.adapter = adapter
     }
 }

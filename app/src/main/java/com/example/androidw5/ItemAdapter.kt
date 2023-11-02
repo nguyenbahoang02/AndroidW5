@@ -6,59 +6,41 @@ import android.view.ViewGroup
 import android.widget.BaseAdapter
 import android.widget.CheckBox
 import android.widget.TextView
+import androidx.recyclerview.widget.RecyclerView
 
-class ItemAdapter(val items: ArrayList<ItemModel>) : BaseAdapter() {
-    override fun getCount(): Int {
-        return items.size
+class ItemAdapter(val items: ArrayList<ItemModel>) : RecyclerView.Adapter<ItemAdapter.ViewHolder>() {
+    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
+        val itemView = LayoutInflater.from(parent.context).inflate(R.layout.item, parent, false)
+        return ViewHolder(itemView)
     }
 
-    override fun getItem(position: Int): Any {
-        return items[position]
-    }
-
-    override fun getItemId(position: Int): Long {
-        return position.toLong()
-    }
-
-    override fun getView(p0: Int, p1: View?, p2: ViewGroup?): View {
-
-        var itemView: View
-        var viewHolder: ViewHolder
-        if (p1 == null) {
-            itemView = LayoutInflater.from(p2?.context).inflate(R.layout.item, p2, false)
-            viewHolder = ViewHolder(itemView)
-            itemView.tag = viewHolder
-        } else {
-            itemView = p1
-            viewHolder = itemView.tag as ViewHolder
-        }
-
-        viewHolder.mail.text = items[p0].mail
-        viewHolder.title.text = items[p0].title
-        viewHolder.avatar.text = items[p0].mail.first().uppercase()
-        viewHolder.time.text = items[p0].time
-        viewHolder.content.text = items[p0].content
-        viewHolder.checkBox.isChecked = items[p0].selected
-
+    override fun onBindViewHolder(viewHolder: ViewHolder, position: Int) {
+        viewHolder.mail.text = items[position].mail
+        viewHolder.title.text = items[position].title
+        viewHolder.avatar.text = items[position].mail.first().uppercase()
+        viewHolder.time.text = items[position].time
+        viewHolder.content.text = items[position].content
+        viewHolder.checkBox.isChecked = items[position].selected
         viewHolder.title.ellipsize = android.text.TextUtils.TruncateAt.END
         viewHolder.content.ellipsize = android.text.TextUtils.TruncateAt.END
-
-        if (items[p0].selected) {
+        if (items[position].selected) {
             viewHolder.checkBox.setButtonDrawable(android.R.drawable.btn_star_big_on)
         } else viewHolder.checkBox.setButtonDrawable(android.R.drawable.btn_star_big_off)
 
         viewHolder.checkBox.setOnClickListener {
-            items[p0].selected = !items[p0].selected
-            if (items[p0].selected) {
+            items[position].selected = !items[position].selected
+            if (items[position].selected) {
                 viewHolder.checkBox.setButtonDrawable(android.R.drawable.btn_star_big_on)
             } else viewHolder.checkBox.setButtonDrawable(android.R.drawable.btn_star_big_off)
             notifyDataSetChanged()
         }
-
-        return itemView
     }
 
-    class ViewHolder(itemView: View) {
+    override fun getItemCount(): Int {
+        return items.size
+    }
+
+    class ViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
         var mail: TextView
         var title: TextView
         var content: TextView
